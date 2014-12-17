@@ -3,14 +3,12 @@ extends Node2D
 
 # Laser-y Shooter-y Variables
 var laser = preload("res://laser.res")
-var laser_limit = 10 # Currently unused
 var laser_count = 0
 var lasers = []
 var space_event_consumed = false
 
 # Rock Variables
 var rock = preload("res://rock.res")
-var rock_limit = 10 # Currently unused
 var rock_count = 0
 var rocks = []
 var last_rock = 0
@@ -81,8 +79,6 @@ func game_loop(delta):
 	for rock in rocks:
 		var rock_node = get_node(rock)
 		var rock_pos = rock_node.get_pos()
-		rock_pos.y += 200 * delta
-		rock_node.set_pos(rock_pos)
 		if rock_pos.y >= 568:
 			remove_and_delete_child(rock_node)
 			rocks.remove(rock_id)
@@ -117,6 +113,7 @@ func game_loop(delta):
 		var rock_pos = rock_node.get_pos()
 		if rock_pos.y >= 500 && rock_pos.x >= (ship_pos.x - ship_width) && rock_pos.x <= (ship_pos.x + ship_width):
 			ded = true
+			get_tree().set_pause(true)
 
 	score_label.set_text(str(score))
 

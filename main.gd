@@ -29,7 +29,7 @@ var ship_width = 40
 func _ready():
 	
 	# Init score label
-	score_label = get_node("score")
+	score_label = get_node("../../GUI Layer/score")
 	
 	# Start the process function (Godot's version of Update())
 	set_process(true)

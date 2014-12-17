@@ -5,7 +5,6 @@ extends Node2D
 var laser = preload("res://laser.res")
 var laser_limit = 10 # Currently unused
 var laser_count = 0
-var laser_speed = 400
 var lasers = []
 var space_event_consumed = false
 
@@ -66,8 +65,6 @@ func game_loop(delta):
 	for laser in lasers:
 		var laser_node = get_node(laser)
 		var laser_pos = laser_node.get_pos()
-		laser_pos.y -= laser_speed * delta
-		laser_node.set_pos(laser_pos)
 		if laser_pos.y < 0:
 			remove_and_delete_child(laser_node)
 			lasers.remove(laser_id)

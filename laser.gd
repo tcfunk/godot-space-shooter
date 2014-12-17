@@ -1,11 +1,13 @@
 
 extends Node
 
+var speed = 400
 
 func _ready():
 	set_process(true)
 	pass
 
 func _process(delta):
-	print("Pause mode: " + str(get_pause_mode()))
-	
+	var cur_pos = get_pos()
+	cur_pos.y -= speed * delta
+	set_pos(cur_pos)

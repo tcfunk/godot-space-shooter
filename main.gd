@@ -5,6 +5,7 @@ extends Node2D
 var laser = preload("res://laser.res")
 var laser_limit = 10 # Currently unused
 var laser_count = 0
+var laser_speed = 400
 var lasers = []
 var space_event_consumed = false
 
@@ -15,6 +16,7 @@ var rock_count = 0
 var rocks = []
 var last_rock = 0
 var rock_frequency = 1
+var rock_width = 20
 
 func _ready():
 	# Initalization here
@@ -49,7 +51,7 @@ func _process(delta):
 	for laser in lasers:
 		var laser_node = get_node(laser)
 		var laser_pos = laser_node.get_pos()
-		laser_pos.y -= 200 * delta
+		laser_pos.y -= laser_speed * delta
 		laser_node.set_pos(laser_pos)
 		if laser_pos.y < 0:
 			remove_and_delete_child(laser_node)
@@ -61,6 +63,36 @@ func _process(delta):
 	if last_rock >= rock_frequency:
 		spawn_rock()
 		last_rock = 0
+
+	# Move meteors
+	var rock_id = 0
+	for rock in rocks:
+		var rock_node = get_node(rock)
+		var rock_pos = rock_node.get_pos()
+		rock_pos.y += 200 * delta
+		rock_node.set_pos(rock_pos)
+		if rock_pos.y >= 568:
+			remove_and_delete_child(rock_node)
+			rocks.remove(rock_id)
+		rock_id += 1
+	
+	# Check for collisions between rocks and lasers
+	laser_id = 0
+	for laser in lasers:
+		var laser_node = get_node(laser)
+		var laser_pos = laser_node.get_pos()
+		rock_id = 0
+		for rock in rocks:
+			var rock_node = get_node(rock)
+			var rock_pos = rock_node.get_pos()
+			if laser_pos.y < rock_pos.y:
+				if laser_pos.x > rock_pos.x - rock_width && laser_pos.x < rock_pos.x + rock_width:
+					lasers.remove(laser_id)
+					rocks.remove(rock_id)
+					remove_and_delete_child(laser_node)
+					remove_and_delete_child(rock_node)
+			rock_id += 1
+		laser_id += 1
 
 
 func fire(ship_pos):

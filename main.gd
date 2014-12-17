@@ -18,9 +18,19 @@ var last_rock = 0
 var rock_frequency = 1
 var rock_width = 20
 
+# Keeping score...this is a game after all
+var score_label
+var score = 0
+
 func _ready():
-	# Initalization here
+	
+	# Init score label
+	score_label = get_node("score")
+	
+	# Start the process function (Godot's version of Update())
 	set_process(true)
+	
+	# pass?
 	pass
 
 func _process(delta):
@@ -87,12 +97,15 @@ func _process(delta):
 			var rock_pos = rock_node.get_pos()
 			if laser_pos.y < rock_pos.y:
 				if laser_pos.x > rock_pos.x - rock_width && laser_pos.x < rock_pos.x + rock_width:
+					score += 1
 					lasers.remove(laser_id)
 					rocks.remove(rock_id)
 					remove_and_delete_child(laser_node)
 					remove_and_delete_child(rock_node)
 			rock_id += 1
 		laser_id += 1
+		
+	score_label.set_text(str(score))
 
 
 func fire(ship_pos):

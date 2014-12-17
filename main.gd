@@ -11,6 +11,5 @@ func _ready():
 	pass
 
 func _process(delta):
-	print("Hello world")
-	pass
-	
+	if Input.is_action_pressed("space"):
+		print("Space key pressed")

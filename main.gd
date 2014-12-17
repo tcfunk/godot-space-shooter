@@ -3,10 +3,18 @@ extends Node2D
 
 # Laser-y Shooter-y Variables
 var laser = preload("res://laser.res")
-var laser_limit = 10
+var laser_limit = 10 # Currently unused
 var laser_count = 0
 var lasers = []
 var space_event_consumed = false
+
+# Rock Variables
+var rock = preload("res://rock.res")
+var rock_limit = 10 # Currently unused
+var rock_count = 0
+var rocks = []
+var last_rock = 0
+var rock_frequency = 1
 
 func _ready():
 	# Initalization here
@@ -48,8 +56,13 @@ func _process(delta):
 			lasers.remove(laser_id)
 		laser_id += 1
 	
-	print(lasers)
-	
+	# Spawn meteors
+	last_rock += delta
+	if last_rock >= rock_frequency:
+		spawn_rock()
+		last_rock = 0
+
+
 func fire(ship_pos):
 
 	# Create a new instance of laser prefab, increment laser_count
@@ -68,3 +81,21 @@ func fire(ship_pos):
 	laser_pos.y -= 50
 	laser_node.set_pos(laser_pos)
 	
+func spawn_rock():
+
+	# Create a new instance of rock prefab, increment rock_count
+	var rock_inst = rock.instance()
+	rock_count += 1
+	
+	# Create node name, attach node, and get reference to node
+	var rock_name = "rock" + str(rock_count)
+	rocks.push_back(rock_name)
+	rock_inst.set_name(rock_name)
+	add_child(rock_inst)
+	var rock_node = get_node(rock_name)
+	
+	# @TODO: Position rock in random position at the top of the screen
+	var rock_pos = rock_node.get_pos()
+	rock_pos.y = -5
+	rock_pos.x = rand_range(0, 320)
+	rock_node.set_pos(rock_pos)

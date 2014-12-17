@@ -22,6 +22,10 @@ var rock_width = 20
 var score_label
 var score = 0
 
+# Player variables
+var ded = false
+var ship_width = 40
+
 func _ready():
 	
 	# Init score label
@@ -33,7 +37,8 @@ func _ready():
 	# pass?
 	pass
 
-func _process(delta):
+func game_loop(delta):
+
 	var ship = get_node("ship")
 	var ship_pos = ship.get_pos()
 
@@ -105,6 +110,17 @@ func _process(delta):
 			rock_id += 1
 		laser_id += 1
 		
+	# Check for collisions between rocks and player
+	# If collision occurred, stop the game and set the score text
+	# to include restart instructions
+	rock_id = 0
+	ship_pos = ship.get_pos()
+	for rock in rocks:
+		var rock_node = get_node(rock)
+		var rock_pos = rock_node.get_pos()
+		if rock_pos.y >= 500 && rock_pos.x >= (ship_pos.x - ship_width) && rock_pos.x <= (ship_pos.x + ship_width):
+			ded = true
+
 	score_label.set_text(str(score))
 
 
@@ -125,7 +141,7 @@ func fire(ship_pos):
 	var laser_pos = ship_pos
 	laser_pos.y -= 50
 	laser_node.set_pos(laser_pos)
-	
+
 func spawn_rock():
 
 	# Create a new instance of rock prefab, increment rock_count
@@ -144,3 +160,38 @@ func spawn_rock():
 	rock_pos.y = -5
 	rock_pos.x = rand_range(0, 320)
 	rock_node.set_pos(rock_pos)
+
+func restart():
+
+	# Remove rocks and lasers from playing field
+	for rock in rocks:
+		remove_and_delete_child(get_node(rock))
+	for laser in lasers:
+		remove_and_delete_child(get_node(laser))
+
+	# Reset rock and laser arrays
+	lasers.clear()
+	rocks.clear()
+
+	# Reset player position
+	var ship_node = get_node("ship")
+	var ship_pos = ship_node.get_pos()
+	ship_pos.x = 160
+	ship_pos.y = 500
+	ship_node.set_pos(ship_pos)
+
+	# Reset score and update label text
+	score = 0
+	score_label.set_text(str(score))
+	
+	# No longer ded
+	ded = false
+	
+
+func _process(delta):
+	if !ded:
+		game_loop(delta)
+	else:
+		score_label.set_text("Final Score: " + str(score) + "\nPress <Enter> to play again.")
+		if Input.is_action_pressed("ui_accept"):
+			restart()

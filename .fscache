@@ -1,8 +1,11 @@
-::res://::1418832988
+::res://::1418841812
+game.gd::GDScript::1418841812::
+gui.gd::GDScript::1418841812::
 icon.png::ImageTexture::1418825722::
-laser.res::PackedScene::1418825722::
-main.gd::GDScript::1418832796::
-main.scn::PackedScene::1418832795::
+laser.gd::GDScript::1418840553::
+laser.res::PackedScene::1418840553::
+main.gd::GDScript::1418841812::
+main.scn::PackedScene::1418841810::
 rock.res::PackedScene::1418826729::
 ::res://Sprites::1418825722
 playerShip1_blue.png::ImageTexture::1418825722::
@@ -312,3 +315,5 @@ playerLife3_blue.png::ImageTexture::1418825722::
 playerLife3_green.png::ImageTexture::1418825722::
 playerLife3_orange.png::ImageTexture::1418825722::
 playerLife3_red.png::ImageTexture::1418825722::
+::res://assets::1418836631
+cubano.fnt::Font::1418833012::font<>assets/Cubano-Regular.otf<>1d65b5646a9a805c62b037be6dd3a0a7<>1325284435

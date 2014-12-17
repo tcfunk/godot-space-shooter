@@ -19,7 +19,7 @@ func _process(delta):
 	# Handle spacebar input
 	if Input.is_action_pressed("space"):
 		if !space_event_consumed:
-			fire()
+			fire(ship_pos)
 			space_event_consumed = true
 	else:
 		space_event_consumed = false
@@ -35,9 +35,20 @@ func _process(delta):
 	# Change location of ship to new ship_pos
 	ship.set_pos(ship_pos)
 	
-func fire():
-	print("fire!")
+func fire(ship_pos):
+
+	# Create a new instance of laser prefab, increment laser_count
 	var laser_inst = laser.instance()
 	laser_count += 1
-	laser_inst.set_name("laser"+str(laser_count))
+	
+	# Create node name, attach node, and get reference to node
+	var laser_name = "laser" + str(laser_count)
+	laser_inst.set_name(laser_name)
 	add_child(laser_inst)
+	var laser_node = get_node(laser_name)
+	
+	# Position laser in front of the ship
+	print("node added, position is:")
+	var laser_pos = ship_pos
+	laser_pos.y -= 50
+	laser_node.set_pos(laser_pos)

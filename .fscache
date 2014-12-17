@@ -1,5 +1,8 @@
-::res://::1418787972
+::res://::1418793753
 icon.png::ImageTexture::1418787700::
+laser.res::PackedScene::1418792071::
+main.gd::GDScript::1418793753::
+main.scn::PackedScene::1418793750::
 ::res://Sprites::1418787972
 playerShip1_blue.png::ImageTexture::1390988460::
 playerShip1_green.png::ImageTexture::1390988460::
